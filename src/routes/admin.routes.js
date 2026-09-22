@@ -9,6 +9,7 @@ import {
 import {
   listAllOrders,
   updateOrderStatus,
+  getAllOrdersOfDate,
 } from "../controllers/order.controller.js";
 import { listAllSlotsAdmin } from "../controllers/pickupSlot.controller.js";
 import {
@@ -31,6 +32,7 @@ router.patch("/menu-items/:id/availability", toggleAvailability);
 
 // Admin order management
 router.get("/orders", listAllOrders);
+router.get("/orders/live", getAllOrdersOfDate);
 router.patch("/orders/:id/status", updateOrderStatus);
 
 // Admin pickup slot management

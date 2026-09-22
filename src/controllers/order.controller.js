@@ -162,6 +162,29 @@ export const listAllOrders = async (req, res, next) => {
   });
 };
 
+export const getAllOrdersOfDate = async (req, res, next) => {
+  const { status, date } = req.query;
+
+  const filter = {};
+  if (status) filter.status = status;
+  if (date) {
+    const start = new Date(date);
+    const end = new Date(date);
+    end.setUTCHours(23, 59, 59, 999);
+    filter.placedAt = { $gte: start, $lte: end };
+  }
+
+  const orders = await Order.find(filter).populate("user pickupSlot");
+
+  res.status(200).json({
+    success: true,
+    message: "Orders fetched",
+    data: {
+      orders,
+    },
+  });
+};
+
 export const updateOrderStatus = async (req, res, next) => {
   const order = await Order.findById(req.params.id);
   if (!order) throw new ApiError(404, "Order not found");
